@@ -36,18 +36,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mSocket.connect();
 
-        JSONObject student1 = new JSONObject();
+        JSONObject student = new JSONObject();
         try {
-            student1.put("id", roomId);
-            student1.put("type", "input");
-            student1.put("nick", "android");
+            student.put("id", roomId);
+            student.put("type", "input");
+            student.put("nick", "android");
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        mSocket.emit("register", student1);
+        mSocket.emit("register", student);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
