@@ -3,6 +3,7 @@
     package="com.example.tim.sensorsdemo">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name="android.support.multidex.MultiDexApplication"

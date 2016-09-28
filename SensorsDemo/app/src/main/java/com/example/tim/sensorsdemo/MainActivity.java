@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -30,24 +31,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private String userName = "Android";
     private String currentState = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSocket.connect();
 
-        JSONObject student = new JSONObject();
+        JSONObject connect = new JSONObject();
         try {
-            student.put("id", roomId);
-            student.put("type", "input");
-            student.put("nick", "android");
+            connect.put("id", roomId);
+            connect.put("type", "input");
+            connect.put("nick", userName);
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        mSocket.emit("register", student);
+        mSocket.emit("register", connect);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -121,16 +123,39 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // To read the value of the sensor and send the right value to the server,
         // going to calibrate this later to fit the game
 
-        if(xAccel < -1.1 && xAccel > -3.9 && currentState != "Right0") {
-            System.out.println("Right0");
+        // Testing the vibrator
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
-            JSONObject Right0 = setJsonObject("Right0",roomId,userName);
+       if(((xAccel < -1.1 && xAccel > -3.9) && (yAccel < -1.1 && yAccel > -3.9)) && currentState != "DownRight0"){
+           System.out.println("DownRight0");
 
-           mSocket.emit("send message",Right0);
-            currentState = "Right0";
+           JSONObject DownRight0 = setJsonObject("DownRight0", roomId, userName);
+
+           mSocket.emit("send message", DownRight0);
+           currentState = "DownRight0";
+       }
+
+       else if(((xAccel < -4 && xAccel > -7) && (yAccel < -4 && yAccel > -7 )) && currentState != "DownRight1"){
+            System.out.println("DownRight1");
+
+            JSONObject DownRight1 = setJsonObject("DownRight1", roomId, userName);
+
+            mSocket.emit("send message", DownRight1);
+            currentState = "DownRight1";
         }
 
-        if(xAccel < -4 && xAccel > -7 && currentState != "Right1"){
+        else if((xAccel < -1.1 && xAccel > -3.9)&&(!(yAccel < -1.1 && yAccel > -3.9)) && currentState != "Right0") {
+
+                System.out.println("Right0");
+
+                JSONObject Right0 = setJsonObject("Right0", roomId, userName);
+
+                mSocket.emit("send message", Right0);
+                currentState = "Right0";
+                //v.vibrate(500);
+        }
+
+       else if((xAccel < -4 && xAccel > -7) && (!(yAccel < -4 && yAccel > -7)) &&currentState != "Right1"){
             System.out.println("Right1");
 
             JSONObject Right1 = setJsonObject("Right1",roomId,userName);
@@ -138,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Right1";
         }
 
-        if(xAccel < -7 && currentState != "Right2"){
+       else if(xAccel < -7 && currentState != "Right2"){
             System.out.println("Right2");
 
             JSONObject Right2 = setJsonObject("Right2",roomId,userName);
@@ -147,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Right2";
         }
 
-        if(xAccel > -1 && xAccel < 1 && yAccel > -1 && yAccel < 1 && currentState != "Still"){
+       else if(xAccel > -1 && xAccel < 1 && yAccel > -1 && yAccel < 1 && currentState != "Still"){
             System.out.println("Standing still");
 
             JSONObject Still = setJsonObject("Standing still",roomId,userName);
@@ -155,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Still";
         }
 
-        if(xAccel > 1.1 && xAccel < 3.9 && currentState != "Left0"){
+       else if(xAccel > 1.1 && xAccel < 3.9 && currentState != "Left0"){
             System.out.println("Left0");
 
             JSONObject Left0 = setJsonObject("Left0",roomId,userName);
@@ -164,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
 
-        if(xAccel > 4 && xAccel < 7 && currentState != "Left1"){
+       else if(xAccel > 4 && xAccel < 7 && currentState != "Left1"){
             System.out.println("Left1");
 
             JSONObject Left1 = setJsonObject("Left1",roomId,userName);
@@ -173,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Left1";
         }
 
-        if(xAccel > 7 && currentState != "Left2"){
+       else if(xAccel > 7 && currentState != "Left2"){
             System.out.println("Left2");
 
             JSONObject Left2 = setJsonObject("Left2",roomId,userName);
@@ -182,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Left2";
         }
 
-        if(yAccel < -1.1 && yAccel > -3.9 && currentState != "Down0"){
+       else if((yAccel < -1.1 && yAccel > -3.9) && (!((xAccel < -1.1 && xAccel > -3.9))) &&currentState != "Down0"){
             System.out.println("Down0");
 
             JSONObject Down0 = setJsonObject("Down0",roomId,userName);
@@ -192,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
 
-        if(yAccel < -4 && yAccel > -7 && currentState != "Down1"){
+
+       else if((yAccel < -4 && yAccel > -7) && (!(xAccel < -4 && xAccel > -7)) &&currentState != "Down1"){
             System.out.println("Down1");
 
             JSONObject Down1 = setJsonObject("Down1",roomId,userName);
@@ -201,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Down1";
         }
 
-        if(yAccel < -7 && currentState != "Down2"){
+       else if(yAccel < -7 && currentState != "Down2"){
             System.out.println("Down2");
 
             JSONObject Down2 = setJsonObject("Down2",roomId,userName);
@@ -210,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Down2";
         }
 
-        if(yAccel > 1.1 && yAccel < 3.9 && currentState != "Up0"){
+       else if(yAccel > 1.1 && yAccel < 3.9 && currentState != "Up0"){
             System.out.println("Up0");
 
             JSONObject Up0 = setJsonObject("Up0",roomId,userName);
@@ -219,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Up0";
         }
 
-        if(yAccel > 4 && yAccel < 7 && currentState != "Up1"){
+       else if(yAccel > 4 && yAccel < 7 && currentState != "Up1"){
             System.out.println("Up1");
 
             JSONObject Up1 = setJsonObject("Up1",roomId,userName);
@@ -228,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             currentState = "Up1";
         }
 
-        if(yAccel > 7 && currentState != "Up2"){
+       else if(yAccel > 7 && currentState != "Up2"){
             System.out.println("Up2");
 
             JSONObject Up2 = setJsonObject("Up2",roomId,userName);
