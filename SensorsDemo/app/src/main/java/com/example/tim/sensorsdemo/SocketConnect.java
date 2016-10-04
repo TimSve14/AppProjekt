@@ -86,7 +86,6 @@ public class SocketConnect extends Activity {
         return JsonObject;
     }
     public void sendMove(String move){
-        System.out.println(move);
         mSocket.emit("send message",setJsonObject(move,roomId,userName));
     }
 

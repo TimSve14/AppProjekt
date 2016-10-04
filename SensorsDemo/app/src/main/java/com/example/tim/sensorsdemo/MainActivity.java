@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        Connect= new SocketConnect("owkzz2znppa13tfswcdi","input","android");
+        Connect= new SocketConnect("q3cyzu6i835zwmsoflxr","input","android");
         Controller = new SimpleController();
 
         Connect.startSocketConnection();

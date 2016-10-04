@@ -18,6 +18,7 @@ public class InitSensor extends Activity implements SensorEventListener{
     float[] values = new float[3];
     private Controller Controller;
     private SocketConnect Connect;
+    private String currentState = "";
 
     public InitSensor(){
     }
@@ -44,14 +45,18 @@ public class InitSensor extends Activity implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         Sensor mySensor = event.sensor;
         String move = "";
+        String previousMove ="";
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             values[0] = event.values[0];
             values[1] = event.values[1];
             values[2] = event.values[2];
 
             move = Controller.getMove(values);
-            Connect.sendMove(move);
 
+            if(move != currentState && move != null) {
+                Connect.sendMove(move);
+                currentState = move;
+            }
         }
     }
 
