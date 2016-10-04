@@ -5,4 +5,5 @@ package com.example.tim.sensorsdemo;
  */
 
 public interface Controller {
+    public String getMove(float [] coordinates);
 }
